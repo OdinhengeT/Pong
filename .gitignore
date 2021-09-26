@@ -1,4 +1,5 @@
 /.vscode/*
 /asm/*
 /bin/*
+/testing/bin/*
 /*.exe

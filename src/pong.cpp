@@ -3,7 +3,7 @@
 #include <thread>
 #include <memory>
 
-#include "entity.hpp"
+#include "entity/entity.hpp"
 #include "graphics/frame.hpp"
 #include "window/window.hpp"
 

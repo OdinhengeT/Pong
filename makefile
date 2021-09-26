@@ -1,9 +1,9 @@
 #	Author: OdinhengeT 
-#	Date: 2021-09-10
+#	Date: 2021-09-26
 
 #	Description:
 #	This is a basic makefile created to build small C++ projects (with the MSYS2 Mingw-w64 toolchain), and to support them as they grow larger.
-#	Supports: .cpp format (not .cc), compiling to assembly, Libraries and Subdirectories, 
+#	Supports: .cpp format (not .cc), compiling to assembly, Libraries and Subdirectories, testing
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Compiler & Linker
@@ -22,15 +22,21 @@ CXXFLAGS := $(addprefix -, std=$(CXX_VERSION) $(CXX_OPTIMIZATION) $(CXX_WARNINGS
 #	Directory Structure
 
 # Main Directorues 
-dASM := asm
-dBIN := bin
-dLIB := libs
-dSRC := src
+dASM  := asm
+dBIN  := bin
+dLIB  := libs
+dSRC  := src
+dTEST := testing
 
 # Subdirectories (in src)
-subDirs := graphics graphics/fonts window
+subDirs := entity graphics graphics/fonts window
 
 # Files contained in Subdirectories
+
+entity := $(addprefix entity/, \
+	entity.cpp \
+)
+
 graphics/fonts := $(addprefix graphics/fonts/, \
 	bitFont.cpp \
 )
@@ -49,20 +55,17 @@ window := $(addprefix window/, \
 Programs := Pong
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#	Phony & Main Targets
+#	Default Target
 
 .PHONY: assembly default done install install_assembly log settings
 
 # Default Routine Run by Make
 default: install settings log $(addsuffix .exe,$(Programs)) done
 
-# Assembly Routine
-assembly: install_assembly settings log $(addsuffix .s,$(Programs)) done
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Pong
 
-Pong_deps := pong.cpp entity.cpp $(graphics) $(graphics/fonts) $(window)
+Pong_deps := pong.cpp $(entity) $(graphics) $(graphics/fonts) $(window)
 Pong_libs := gdi32
 
 # Executable Build
@@ -74,27 +77,53 @@ Pong.exe: $(addprefix $(dBIN)/, $(Pong_deps:.cpp=.o))
 Pong.s: $(addprefix $(dASM)/, $(Pong_deps:.cpp=.s))
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#	Testing
+
+test: test_init settings log testMain.exe done
+
+# Test-cases to be run by testMain
+Tests := testMain.cpp
+
+# Dependencies & Libraries of tests to be run (from dSRC)
+Test_deps := $(entity) $(graphics) $(graphics/fonts) $(window)
+Test_libs := gdi32
+
+# Executable Build
+testMain.exe: $(addprefix $(dTEST)/bin/, $(Tests:.cpp=.o)) $(addprefix $(dBIN)/, $(Test_deps:.cpp=.o))
+	@$(CXX) $(CXXFLAGS) -o $@ $^ $(addprefix -l, $(Test_libs))
+	@echo "- Created $@"
+
+test_init:
+	@echo "==Initializing Testing=="
+	$(call createDirectory,$(dTEST)) 
+	$(call createDirectory,$(dTEST)/bin) 
+	@echo "- Done"
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#	Assembly
+
+asm: asm_init settings log $(addsuffix .s,$(Programs)) done
+
+asm_init:
+	@echo "==Initializing Assembly=="
+	$(call createDirectory,$(dASM)) 
+	$(foreach p, $(subDirs), $(call createDirectory,$(addprefix $(dASM)/,$(p))))
+	@echo "- Done"
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Standardized Compile-routines
 
 $(addprefix $(dBIN)/, %.o): $(addprefix $(dSRC)/, %.cpp)
 	@$(CXX) $(CXXFLAGS) -o $@ -c $^
 	@echo "- Created $@"
 
+$(addprefix $(dTEST)/bin/, %.o): $(addprefix $(dTEST)/, %.cpp)
+	@$(CXX) $(CXXFLAGS) -g -o $@ -c $^
+	@echo "- Created $@"
+
 $(addprefix $(dASM)/, %.s): $(addprefix $(dSRC)/, %.cpp)
 	@$(CXX) $(CXXFLAGS) -S -o $@ $^
 	@echo "- Created $@"
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#	Functions
-
-# Initialize Directory (Empty Line IS Necessary)
-define createDirectory
-	@if [ ! -d "$(1)" ]; \
-		then echo "- Created $(1)"; \
-		mkdir $(1); \
-	fi
-
-endef
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Extra Targets
@@ -107,20 +136,13 @@ settings:
 	@echo "- Warnings: $(CXX_WARN)"
 
 # Install Routine
-install:
-	@echo "==Installing=="
+init:
+	@echo "==Initializing=="
 	$(call createDirectory,$(dBIN))
 	$(foreach p, $(subDirs), $(call createDirectory,$(addprefix $(dBIN)/,$(p))))
 	$(call createDirectory,$(dSRC))
 	$(foreach p, $(subDirs), $(call createDirectory,$(addprefix $(dSRC)/,$(p))))
 	$(call createDirectory,$(dLIB))
-	@echo "- Done"
-
-# Assembly Install Routine
-install_assembly:
-	@echo "==Installing Assembly=="
-	$(call createDirectory,$(dASM)) 
-	$(foreach p, $(subDirs), $(call createDirectory,$(addprefix $(dASM)/,$(p))))
 	@echo "- Done"
 
 # Log Message
@@ -130,3 +152,15 @@ log:
 # Done Message
 done:
 	@echo "==Done=="
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#	Functions
+
+# Initialize Directory (Empty Line IS Necessary)
+define createDirectory
+	@if [ ! -d "$(1)" ]; \
+		then echo "- Created $(1)"; \
+		mkdir $(1); \
+	fi
+
+endef
