@@ -5,8 +5,7 @@
 #include <stdint.h>
 #include <windows.h>
 
-#include "../qShapes/qShapes.hpp"
-#include "../fonts/thorFont.hpp"
+#include "fonts/bitFont.hpp"
 
 uint32_t makeRGB(uint8_t red, uint8_t green, uint8_t blue);
 
@@ -21,19 +20,17 @@ class Frame {
         void* getPixels();
         BITMAPINFO* getBitmap_info();
 
-        uint32_t& operator()(unsigned int x, unsigned int y);
-
         void clear();
 
-        void drawLine(qShapes::qLine2D line, uint32_t RGB_Color);
+        uint32_t get_pixelAt(unsigned int x, unsigned int y);
 
-        void drawTriangle(qShapes::qTriangle2D triangle, uint32_t RGB_Color);
+        void set_pixelAt(unsigned int x, unsigned int y, uint32_t RGB_Color);
 
-        void drawRectangle(qShapes::qRectangle2D rectangle, uint32_t RGB_Color);
+        void drawRectangle(int x, int y, int width, int height, uint32_t RGB_Color);
 
-        void drawCharacter(int x0, int y0, char character, int pixel_width, int pixel_height, uint32_t RGB_Color);
+        void drawCharacter(int x, int y, char character, int pixel_width, int pixel_height, uint32_t RGB_Color);
 
-        void drawString(int x0, int y0, std::string string, int pixel_width, int pixel_height, uint32_t RGB_Color);
+        void drawString(int x, int y, std::string string, int pixel_width, int pixel_height, uint32_t RGB_Color);
 };
 
 #endif

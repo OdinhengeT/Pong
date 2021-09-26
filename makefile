@@ -28,19 +28,15 @@ dLIB := libs
 dSRC := src
 
 # Subdirectories (in src)
-subDirs := fonts graphics qShapes window
+subDirs := graphics graphics/fonts window
 
 # Files contained in Subdirectories
-fonts := $(addprefix fonts/, \
-	thorFont.cpp \
+graphics/fonts := $(addprefix graphics/fonts/, \
+	bitFont.cpp \
 )
 
 graphics := $(addprefix graphics/, \
-	frame.cpp ThorColor.cpp \
-)
-
-qShapes := $(addprefix qShapes/, \
-	qShapes.cpp \
+	frame.cpp \
 )
 
 window := $(addprefix window/, \
@@ -66,7 +62,7 @@ assembly: install_assembly settings log $(addsuffix .s,$(Programs)) done
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Pong
 
-Pong_deps := pong.cpp $(fonts) $(graphics) $(qShapes) $(window)
+Pong_deps := pong.cpp entity.cpp $(graphics) $(graphics/fonts) $(window)
 Pong_libs := gdi32
 
 # Executable Build

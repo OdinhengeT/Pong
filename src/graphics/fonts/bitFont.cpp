@@ -1,6 +1,6 @@
-#include "ThorFont.hpp"
+#include "bitFont.hpp"
 
-const ThorFont8Char ThorFont8_ASCII_ALPHABET[95] = { 
+const BitFont8Char BitFont8_ASCII_ALPHABET[95] = { 
     0x0000000000000000, // Space
     0x1818001818181818, // !
     0x0000000000000000, // "
@@ -98,7 +98,7 @@ const ThorFont8Char ThorFont8_ASCII_ALPHABET[95] = {
     0x0000000000000000  // ~
 };
 
-ThorFont8Char getThorFont8Char(char character) {
-    if (character < ' ' || character == '\x7F') return ThorFont8_ASCII_ALPHABET[0];
-    return ThorFont8_ASCII_ALPHABET[character - ' '];
+BitFont8Char getBitFont8Char(char character) {
+    if (character < ' ' || character == '\x7F') return BitFont8_ASCII_ALPHABET[0];
+    return BitFont8_ASCII_ALPHABET[character - ' '];
 }

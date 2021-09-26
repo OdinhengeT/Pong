@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <string>
 #include <windows.h>
@@ -29,3 +30,5 @@ class RGBColor {
         unsigned char Red;
         unsigned char Padding;
 };
+
+#endif
