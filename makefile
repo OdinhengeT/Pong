@@ -1,5 +1,5 @@
 #	Author: OdinhengeT 
-#	Date: 2021-09-26
+#	Date: 2021-09-28
 
 #	Description:
 #	This is a basic makefile created to build small C++ projects (with the MSYS2 Mingw-w64 toolchain), and to support them as they grow larger.
@@ -55,12 +55,13 @@ window := $(addprefix window/, \
 Programs := Pong
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#	Default Target
-
-.PHONY: assembly default done install install_assembly log settings
+#	Default & PHONY Targets
 
 # Default Routine Run by Make
-default: install settings log $(addsuffix .exe,$(Programs)) done
+default: init settings log $(addsuffix .exe,$(Programs)) done
+
+# Declaration of PHONY (non-file) Targets
+.PHONY: asm asm_init default done init log settings test test_init
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Pong
