@@ -3,7 +3,7 @@
 
 #	Description:
 #	This is a basic makefile created to build small C++ projects (with the MSYS2 Mingw-w64 toolchain), and to support them as they grow larger.
-#	Supports: .cpp format (not .cc), compiling to assembly, Libraries and Subdirectories, testing
+#	Supports: .cpp format (not .cc), compiling to assembly, Libraries and Subdirectories, testing.
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Compiler & Linker
@@ -21,7 +21,7 @@ CXXFLAGS := $(addprefix -, std=$(CXX_VERSION) $(CXX_OPTIMIZATION) $(CXX_WARNINGS
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #	Directory Structure
 
-# Main Directorues 
+# Main Directories 
 dASM  := asm
 dBIN  := bin
 dLIB  := libs
@@ -32,7 +32,6 @@ dTEST := testing
 subDirs := entity graphics graphics/fonts window
 
 # Files contained in Subdirectories
-
 entity := $(addprefix entity/, \
 	entity.cpp \
 )
