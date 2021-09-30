@@ -1,19 +1,14 @@
-#	Makefile for C++ Projects
-#	Version 1.0 (beta)
-#	Date: 2021-09-28
-#	Author: OdinhengeT (https://github.com/OdinhengeT)
-
-#	==========================================================================================================================
-#	   :######:   :#####:    :####: :##:    :##: :##:    :##: :########: :##:    :##:   :######:    :########: :############: 
-#	  :###::###:  :##::##:.   :##:  :###:   :##: :##:    :##: :##:'''''  :###:   :##:  :###::###:   :##:'''''   '''':##:''''  
-#	 :###:  :###: :##:  :##:  :##:  :####:  :##: :##:    :##: :##:       :####:  :##: :###:  :###:  :##:            :##:      
-#	 :##:    :##: :##:   :##: :##:  :##:##: :##: :##:....:##: :##:...    :##:##: :##: :##:    '''   :##:...         :##:      
-#	 :###:  :###: :##:   :##: :##:  :##::##::##: :##########: :######:   :##::##::##: :##:   .....  :######:        :##:      
-#	  :###::###:  :##:   :##: :##:  :##: :##:##: :##:'''':##: :##''''    :##: :##:##: :##:  :#####: :##:'''         :##:      
-#	   :######:   :##:  :##:  :##:  :##:  :####: :##:    :##: :##        :##:  :####: :###:  :####: :##:            :##:      
-#	  :###::###.  :##::##:'   :##:  :##:   :###: :##:    :##: :##:.....  :##:   :###:  :###::###:'  :##:            :##:      
-#	 :###:  :###: :#####:    :####: :##:    :##: :##:    :##: :########: :##:    :##:   :######:    :########:      :##:      
-#	==========================================================================================================================
+#	============================
+#	    ######:   ############: 
+#	   ###: ###:       ##:      
+#	  ###:   ###:      ##:      	Makefile for C++ Projects
+#	 ###:     ###:     ##:      	Author: OdinhengeT (https://github.com/OdinhengeT)
+#	  ###:   ###:      ##:      	
+#	   ###: ###:       ##:      	Version 1.0 (beta)
+#	    ######:        ##:      	Date: 2021-09-28
+#	   ###: ###:       ##:      
+#	  ###:   ###:      ##:      
+#	============================
 
 #	Description: 
 #		This is a basic makefile created to build small C++ projects, and to support them as they grow larger. Although this
@@ -22,7 +17,7 @@
 
 #	Set Up:
 #		- Specify your compiler and Optimization, Version & Warning flags under 'Compiler & Linker'. 	
-#		- Add all subdirectories in src-folder to the subDirs variable under 'Subdirectories (in src)'.
+#		- Add all subdirectories in src-folder to the subDirs variable under 'Subdirectories (in dSRC)'.
 #		- Create a variable for each of the subdirectories containing the names of all .cpp files in that directory with
 #		  relative path from the src folder and file extension (.cpp).
 #		- Specify desired name of program to build, its dependencies and its libraries in appropriate variables under 
@@ -56,7 +51,7 @@ dLIB  := libs
 dSRC  := src
 dTEST := testing
 
-#	Subdirectories (in src) ==================================================================================================
+#	Subdirectories (in dSRC) =================================================================================================
 
 subDirs := entity graphics graphics/fonts window
 
@@ -176,7 +171,7 @@ log:
 done:
 	@echo "==Done=="
 
-#	Function =================================================================================================================
+#	Functions ================================================================================================================
 
 # Initialize Directory (Empty Line IS Necessary)
 define createDirectory

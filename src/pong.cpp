@@ -15,7 +15,7 @@ static const int FONT_SIDE_LENGTH = 8;
 static const int FONT_SCALE = 10;
 static const int OFFSET_Y = 3 * MARGIN + FONT_SIDE_LENGTH * FONT_SCALE;
 
-static const float TIME_STEP = 1.0f / 30.0f; // 1 / fps (delta time in milliseconds)
+static const float TIME_STEP = 1.0f / 60.0f; // 1 / fps (delta time in milliseconds)
 
 void simulatePhysics(Entity& ball, Entity& playerLeft, Entity& playerRight) {    
     // Update Velocities
