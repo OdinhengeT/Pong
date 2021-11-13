@@ -65,8 +65,8 @@ void Entity::timeStep(float dt) {
 
 void collisionHandler(Entity& e1, Entity& e2) {
     // Check for collision
-    if (e1.x - e2.x > e1.width || e2.x - e1.x > e2.width) return;
-    if (e1.y - e2.y > e1.height || e2.y - e1.y > e2.height) return;
+    if (e1.x - e2.x > e2.width || e2.x - e1.x > e1.width) return;
+    if (e1.y - e2.y > e2.height || e2.y - e1.y > e1.height) return;
 
     std::cout << "Detected" << std::endl;
 
@@ -80,15 +80,31 @@ void collisionHandler(Entity& e1, Entity& e2) {
         e2.x -= e2.velocity_x * (e2.x + e2.width - e1.x) / (e2.velocity_x - e1.velocity_x);
     }
 
+    if (e1.y < e2.y) {
+        e1.y -= e1.velocity_y * (e1.y + e1.height - e2.y) / (e1.velocity_y - e2.velocity_y);
+        e2.y -= e2.velocity_y * (e1.y + e1.height - e2.y) / (e1.velocity_y - e2.velocity_y);
+    } else {
+        e1.y -= e1.velocity_y * (e2.y + e2.height - e1.y) / (e2.velocity_y - e1.velocity_y);
+        e2.y -= e2.velocity_y * (e2.y + e2.height - e1.y) / (e2.velocity_y - e1.velocity_y);
+    }
+
     // Velocities
+    float e1_iVelX = e1.velocity_x;
+    float e1_iVelY = e1.velocity_y;
 
-    int e1_iVelX = e1.velocity_x;
-    int e2_iVelX = e2.velocity_x;
-    e1.velocity_x = (e1.mass - e2.mass) / (e1.mass + e2.mass) * e1_iVelX + 2.0f * e2.mass / (e1.mass + e2.mass) * e2_iVelX;
-    e2.velocity_x = 2.0f * e1.mass / (e1.mass + e2.mass) * e1_iVelX + (e2.mass - e1.mass) / (e1.mass + e2.mass) * e2_iVelX;
+    float e2_iVelX = e2.velocity_x;
+    float e2_iVelY = e2.velocity_y;
 
-    int e1_iVelY = e1.velocity_y;
-    int e2_iVelY = e2.velocity_y;
-    e1.velocity_y = (e1.mass - e2.mass) / (e1.mass + e2.mass) * e1_iVelY + 2.0f * e2.mass / (e1.mass + e2.mass) * e2_iVelY;
-    e2.velocity_y = 2.0f * e1.mass / (e1.mass + e2.mass) * e1_iVelY + (e2.mass - e1.mass) / (e1.mass + e2.mass) * e2_iVelY;
+    float factor = 2.0f * ( (e1_iVelX - e2_iVelX) * (e1.x + e1.width / 2.0f - e2.x - e2.width / 2.0f ) + (e1_iVelY - e2_iVelY) * (e1.y + e1.height / 2.0f - e2.y - e2.height / 2.0f ));
+    factor = factor / ( (e1.mass + e2.mass) * ((e1.x + e1.width / 2.0f - e2.x - e2.width / 2.0f ) * (e1.x + e1.width / 2.0f - e2.x - e2.width / 2 ) + (e1.y + e1.height / 2.0f - e2.y - e2.height / 2.0f ) * (e1.y + e1.height / 2.0f - e2.y - e2.height / 2.0f )) );
+
+    e1.velocity_x = e1_iVelX - e2.mass * factor * (e1.x + e1.width / 2.0f - e2.x - e2.width / 2.0f);
+    //e1.velocity_x = (e1.mass - e2.mass) / (e1.mass + e2.mass) * e1_iVelX + 2.0f * e2.mass / (e1.mass + e2.mass) * e2_iVelX;
+    e1.velocity_y = e1_iVelY - e2.mass * factor * (e1.y + e1.height / 2.0f - e2.y - e2.height / 2.0f);
+    //e1.velocity_y = (e1.mass - e2.mass) / (e1.mass + e2.mass) * e1_iVelY + 2.0f * e2.mass / (e1.mass + e2.mass) * e2_iVelY;
+
+    e2.velocity_x = e2_iVelX - e1.mass * factor * (e2.x - e2.width / 2.0f - e1.x + e1.width / 2.0f);
+    //e2.velocity_x = 2.0f * e1.mass / (e1.mass + e2.mass) * e1_iVelX + (e2.mass - e1.mass) / (e1.mass + e2.mass) * e2_iVelX;
+    e2.velocity_y = e2_iVelY - e1.mass * factor * (e2.y - e2.height / 2.0f - e1.y + e1.height / 2.0f);
+    //e2.velocity_y = 2.0f * e1.mass / (e1.mass + e2.mass) * e1_iVelY + (e2.mass - e1.mass) / (e1.mass + e2.mass) * e2_iVelY;
 }

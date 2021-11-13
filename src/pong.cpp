@@ -15,12 +15,12 @@ static const int FONT_SIDE_LENGTH = 8;
 static const int FONT_SCALE = 10;
 static const int OFFSET_Y = 3 * MARGIN + FONT_SIDE_LENGTH * FONT_SCALE;
 
-static const float TIME_STEP = 1.0f / 60.0f; // 1 / fps (delta time in milliseconds)
+static const float TIME_STEP = 1.0f / 60.0f; // 1 / fps (delta time in seconds)
 
 void simulatePhysics(Entity& ball, Entity& playerLeft, Entity& playerRight) {    
     // Update Velocities
 
-    playerLeft.setVelocityY(((GetKeyState('S') & 0x8000) - (GetKeyState('W') & 0x8000)) / 0x8000 * 500);
+    playerLeft.setVelocityY(((GetKeyState('S') & 0x8000) - (GetKeyState('W') & 0x8000)) / 0x8000 * 25000 * TIME_STEP);
     if (playerLeft.getPositionY() <= OFFSET_Y && playerLeft.getVelocityY() < 0) {
         playerLeft.setPositionY(OFFSET_Y);
         playerLeft.setVelocityY(0);
@@ -103,26 +103,26 @@ void drawFrame(Frame* frame, int score_left, int score_right, const Entity& ball
     // Players & Ball
 
     frame->drawRectangle(
-        static_cast<int>(ball.getPositionX()), 
-        static_cast<int>(ball.getPositionY()), 
-        static_cast<int>(ball.getWidth()), 
-        static_cast<int>(ball.getHeight()), 
+        static_cast<int>(ball.getPositionX() + 0.5f), 
+        static_cast<int>(ball.getPositionY() + 0.5f), 
+        static_cast<int>(ball.getWidth() + 0.5f), 
+        static_cast<int>(ball.getHeight()) + 0.5f, 
         makeRGB(255, 255, 255)
     );
 
     frame->drawRectangle(
-        static_cast<int>(playerLeft.getPositionX()), 
-        static_cast<int>(playerLeft.getPositionY()), 
-        static_cast<int>(playerLeft.getWidth()), 
-        static_cast<int>(playerLeft.getHeight()), 
+        static_cast<int>(playerLeft.getPositionX() + 0.5f), 
+        static_cast<int>(playerLeft.getPositionY() + 0.5f), 
+        static_cast<int>(playerLeft.getWidth() + 0.5f), 
+        static_cast<int>(playerLeft.getHeight() + 0.5f), 
         makeRGB(255, 255, 255)
     );
     
     frame->drawRectangle(
-        static_cast<int>(playerRight.getPositionX()), 
-        static_cast<int>(playerRight.getPositionY()), 
-        static_cast<int>(playerRight.getWidth()), 
-        static_cast<int>(playerRight.getHeight()), 
+        static_cast<int>(playerRight.getPositionX() + 0.5f), 
+        static_cast<int>(playerRight.getPositionY() + 0.5f), 
+        static_cast<int>(playerRight.getWidth() + 0.5f), 
+        static_cast<int>(playerRight.getHeight() + 0.5f), 
         makeRGB(255, 255, 255)
     );
 
@@ -144,15 +144,15 @@ int main() {
     ball.setVelocityX(100.0f);
     //ball.setVelocityY();
 
-    Entity playerLeft(MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN);
+    Entity playerLeft(MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN, 100000);
    
-    Entity playerRight(WIDTH - 2 * MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN);
+    Entity playerRight(WIDTH - 2 * MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN, 100000);
 
     bool running = true; 
     while (running) {
 
         auto t0 = std::chrono::high_resolution_clock::now();
-        auto t1 = t0 + std::chrono::milliseconds(static_cast<int>(1000.0f * TIME_STEP));
+        auto t1 = t0 + std::chrono::microseconds(static_cast<int>(1000000.0f * TIME_STEP));
 
         if (!pWindow->MsgProc()) {
             std::cout << "Closing Window" << std::endl;

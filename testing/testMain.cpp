@@ -12,6 +12,8 @@ int main() {
 
     Frame* frame = new Frame(1440, 900);
  
+    frame->drawString(50, 50, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!=", 4, 6, makeRGB(255, 128, 0));
+
     bool running = true; 
     while (running) {
 
