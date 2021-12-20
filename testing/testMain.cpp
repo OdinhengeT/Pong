@@ -10,14 +10,14 @@
 int main() {
     std::cout << "Creating Window" << std::endl;
 
-    static const float TIME_STEP = 1.0f / 60.0f; // 1 / fps (delta time in seconds)
+    static const float TIME_STEP = 1.0f / 10.0f; // 1 / fps (delta time in seconds)
 
     auto pWindow = std::unique_ptr<Window>(new Window(L"Pong", 1440, 900));
 
     Frame* frame = new Frame(1440, 900);
 
     Entity one(200, 200, 80, 80, 10);
-    Entity two(400, 200, 80, 80, 10);
+    Entity two(400, 200, 80, 80, 20);
     one.setVelocityX(10);
 
 

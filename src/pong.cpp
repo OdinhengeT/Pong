@@ -141,12 +141,12 @@ int main() {
     // Moving Things
 
     Entity ball(WIDTH / 2 - MARGIN, (HEIGHT + OFFSET_Y) / 2 - 2 * MARGIN, 2 * MARGIN, 2 * MARGIN);
-    ball.setVelocityX(100.0f);
+    ball.setVelocityX(500.0f);
     //ball.setVelocityY();
 
-    Entity playerLeft(MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN, 100000);
+    Entity playerLeft(MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN, 10000.0f);
    
-    Entity playerRight(WIDTH - 2 * MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN, 100000);
+    Entity playerRight(WIDTH - 2 * MARGIN, (HEIGHT + OFFSET_Y) / 2 - 5 * MARGIN, MARGIN, 10 * MARGIN, 10000.0f);
 
     bool running = true; 
     while (running) {
