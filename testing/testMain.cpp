@@ -19,6 +19,7 @@ int main() {
     Entity one(200, 200, 80, 80, 10);
     Entity two(400, 200, 80, 80, 20);
     one.setVelocityX(10);
+    two.setVelocityY(1);
 
 
     bool running = true; 

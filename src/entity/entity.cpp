@@ -70,6 +70,25 @@ void collisionHandler(Entity& e1, Entity& e2) {
 
     // Interpolate for and update positions 
 
+    float overlap_x = e1.x < e2.x ? (e1.x + e1.width - e2.x) : (e2.x + e2.width - e1.x);
+    float overlap_y = e1.y < e2.y ? (e1.y + e1.height - e2.y) : (e2.y + e2.height - e1.y);
+
+    if (overlap_x > overlap_y) { //Snarare hastigheter som dikterar - redo
+        float e1_frac_x = e1.velocity_x / (e1.x < e2.x ? (e1.velocity_x - e2.velocity_x) : (e2.velocity_x - e1.velocity_x) );
+        //float e2_frac_x = e2.velocity_x / (e1.x < e2.x ? (e1.velocity_x - e2.velocity_x) : (e2.velocity_x - e1.velocity_x) );
+
+        e1.x -= overlap_x * e1_frac_x;
+        e2.x -= overlap_x * (1.0f - e1_frac_x);
+
+        float e1_frac_y = e1.velocity_y / (e1.y < e2.y ? (e1.velocity_y - e2.velocity_y) : (e2.velocity_y - e1.velocity_y) );
+        //float frac_e2 = e2.velocity_y / (e1.y < e2.y ? (e1.velocity_y - e2.velocity_y) : (e2.velocity_y - e1.velocity_y) );
+
+        e1.y -= overlap_y * e1_frac_y;
+        e2.y -= overlap_y * (1.0f - e1_frac_y);
+    } else {
+
+    }
+/*
     if (e1.velocity_x - e2.velocity_x != 0) {
         float overlap = e1.x < e2.x ? (e1.x + e1.width - e2.x) : (e2.x + e2.width - e1.x);
 
@@ -89,6 +108,8 @@ void collisionHandler(Entity& e1, Entity& e2) {
         e1.y -= overlap * frac_e1;
         e2.y -= overlap * frac_e2;
     }
+
+*/
 
 /*
 
@@ -111,7 +132,6 @@ void collisionHandler(Entity& e1, Entity& e2) {
 */
 
     // Velocities
-
 
     float iVel_e1X = e1.velocity_x;
     float iVel_e2X = e2.velocity_x;
