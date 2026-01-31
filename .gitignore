@@ -1,5 +1,5 @@
-/.vscode/*
-/asm/*
-/bin/*
-/testing/bin/*
-/*.exe
+.cache
+
+build
+
+.vscode
